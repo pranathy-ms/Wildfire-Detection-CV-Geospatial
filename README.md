@@ -1,0 +1,1 @@
+# Wildfire-Detection-CV-Geospatial
