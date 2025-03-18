@@ -10,6 +10,8 @@ MAP_KEY = "1be8ec47202191da44c455d68bad5edc"
 SENSOR = "VIIRS_NOAA20_NRT"
 COUNTRY_CODE = "USA"
 
+SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+
 def get_country_fire_data(country_code, start_date, end_date):
     """Fetch VIIRS fire data for a specific country and date range"""
     try:
@@ -33,9 +35,9 @@ def get_country_fire_data(country_code, start_date, end_date):
 
 def save_to_current_dir(gdf, filename):
     """Save GeoDataFrame to specified filename in current directory"""
-    current_dir = os.getcwd()
-    print(current_dir)
-    output_path = os.path.join(current_dir, filename)
+    #current_dir = os.getcwd()
+    #print(current_dir)
+    output_path = os.path.join(SCRIPT_DIR, filename)
     gdf.to_file(output_path, driver='GeoJSON')
     print(f"File saved to: {output_path}")
 
