@@ -19,7 +19,7 @@ def get_country_fire_data(country_code, start_date, end_date):
         end = datetime.strptime(end_date, "%Y-%m-%d")
         days_back = (end - start).days + 1
         
-        url = f"https://firms.modaps.eosdis.nasa.gov/api/country/csv/{MAP_KEY}/{SENSOR}/{country_code}/{days_back}/{end_date}"
+        url = f"https://firms.modaps.eosdis.nasa.gov/api/country/csv/{MAP_KEY}/{SENSOR}/{country_code}/{days_back}/{start_date}"
         
         response = requests.get(url)
         response.raise_for_status()
@@ -27,6 +27,7 @@ def get_country_fire_data(country_code, start_date, end_date):
         df = pd.read_csv(StringIO(response.text))
         df['acq_date'] = pd.to_datetime(df['acq_date'])
         mask = (df['acq_date'] >= start) & (df['acq_date'] <= end)
+        print(min(df['acq_date']), max(df['acq_date']))
         return df[mask]
         
     except Exception as e:
