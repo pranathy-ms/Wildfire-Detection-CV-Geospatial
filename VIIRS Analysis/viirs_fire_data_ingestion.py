@@ -3,6 +3,7 @@ import requests
 import pandas as pd
 import geopandas as gpd
 from datetime import datetime, timedelta
+import folium
 from io import StringIO
 import sqlite3
 from apscheduler.schedulers.background import BackgroundScheduler
