@@ -7,9 +7,10 @@ import folium
 from io import StringIO
 import sqlite3
 from apscheduler.schedulers.background import BackgroundScheduler
+import VIIRS_API_keys.json as keys
 
 # Configuration
-MAP_KEY = "1be8ec47202191da44c455d68bad5edc"
+MAP_KEY = keys.MAP_KEY
 SENSOR = "VIIRS_NOAA20_NRT"
 COUNTRY_CODE = "USA"
 DB_PATH = os.path.join(os.path.dirname(__file__), "wildfire_db.sqlite")

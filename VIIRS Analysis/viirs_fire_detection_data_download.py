@@ -4,9 +4,10 @@ import pandas as pd
 import geopandas as gpd
 from datetime import datetime, timedelta
 from io import StringIO
+import VIIRS_API_keys.json as keys
 
 # Configuration
-MAP_KEY = "1be8ec47202191da44c455d68bad5edc"
+MAP_KEY = keys.MAP_KEY
 SENSOR = "VIIRS_NOAA20_NRT"
 COUNTRY_CODE = "USA"
 
