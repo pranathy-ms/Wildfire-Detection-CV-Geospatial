@@ -1,13 +1,16 @@
 import cdsapi
+import os
 
-# Configuration for ERA5 wind data download
+# Configuration
 start_date = "2025-01-07"
-end_date = "2025-01-12"
 lat_min = 33.5
 lat_max = 34.5
 lon_min = -119.0
 lon_max = -118.0
-output_file = "era5_wind_la.nc"
+
+# Set output path to current working directory
+output_dir = os.getcwd()
+output_file = os.path.join(output_dir, "era5_wind_la.nc")
 
 # Initialize CDS API client
 c = cdsapi.Client()
@@ -21,9 +24,9 @@ c.retrieve(
             '10m_u_component_of_wind',
             '10m_v_component_of_wind'
         ],
-        'year': [start_date[:4]],
-        'month': [start_date[5:7]],
-        'day': [start_date[8:10]],
+        'year': start_date[:4],
+        'month': start_date[5:7],
+        'day': start_date[8:10],
         'time': [
             '00:00', '06:00', '12:00', '18:00'
         ],
@@ -36,4 +39,4 @@ c.retrieve(
     output_file
 )
 
-print(f"Data saved to {output_file}")
+print(f"Data saved to: {output_file}")
