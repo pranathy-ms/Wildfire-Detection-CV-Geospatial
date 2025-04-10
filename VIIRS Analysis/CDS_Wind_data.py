@@ -9,7 +9,7 @@ lon_min = -119.0
 lon_max = -118.0
 
 # Set output path to current working directory
-output_dir = os.getcwd()
+output_dir = os.path.dirname(os.path.abspath(__file__))
 output_file = os.path.join(output_dir, "era5_wind_la.nc")
 
 # Initialize CDS API client

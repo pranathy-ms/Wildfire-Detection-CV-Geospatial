@@ -6,7 +6,7 @@ import VIIRS_API_keys as keys
 API_KEY = keys.OPEN_TOPOGRAPHY_MAP_KEY
 BASE_URL = "https://portal.opentopography.org/API/usgsdem"
 
-def fetch_usgs_3dep(lat_min, lat_max, lon_min, lon_max, resolution="30m", output_dir=os.getcwd()):
+def fetch_usgs_3dep(lat_min, lat_max, lon_min, lon_max, resolution="30m", output_dir=os.path.dirname(os.path.abspath(__file__))):
     """
     Fetch USGS 3DEP DEM data from OpenTopography API.
     
