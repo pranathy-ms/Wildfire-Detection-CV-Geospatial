@@ -4,3 +4,40 @@ geopandas==0.14.3         # Last pyproj 3.6-compatible release
 rasterio~=1.3.9           # Allow patch updates only
 pyproj==3.6.1             # Critical: Avoid PROJ 7+ requirements
 albumentations==1.3.1      # Stable with OpenCV 4.x
+
+# Core data science
+numpy
+pandas
+scikit-learn
+matplotlib
+xarray
+netCDF4
+
+# Geospatial
+geopandas
+rasterio
+richdem
+folium
+shapely
+
+# Visualization
+branca
+
+# Data download and API
+requests
+
+# Jupyter (for notebooks)
+jupyter
+
+# For handling time and date
+python-dateutil
+
+# Optional: For ERA5 download (if needed)
+cdsapi
+
+# Optional: For MODIS/VIIRS data download (if needed)
+h5netcdf
+
+# For progress bars (optional, but often used in data processing)
+tqdm
+
