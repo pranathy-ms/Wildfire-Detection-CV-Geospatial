@@ -106,6 +106,20 @@ Wildfire-Detection-CV-Geospatial/
 - Predicted spread points could still be visualized with color-coded confidence
 - Time slider prototype demonstrates potential for dynamic forecast visualization
 
+## Visualization Output (Folium Interactive Map)
+### Key Elements in the Visualization:
+- Circle Colors: Indicate confidence level (0 = low, 1 = nominal, 2 = high) of the accuracy of the fire detected
+- Circle Size: Proportional to FRP (Fire Radiative Power), representing fire intensity in megawatts
+- Slope Raster (Background): Dark red shading indicates steeper slopes, which can influence fire spread
+- Blue Lines: Represent wind vectors — direction and strength of the wind based on ERA5 u10/v10 values
+- Popup Info: Clicking a fire point shows:
+    - Actual Confidence
+    - FRP (MW)
+    - Slope (degrees) at that point
+    - Predicted Confidence (when toggled on)
+
+This map provides a layered understanding of fire behavior based on satellite data and environmental conditions.
+
 ## Future Work
 - Integrate TimestampedGeoJson for real date slider-based spread visualization
 - Switch to classification models (e.g., RandomForestClassifier)
