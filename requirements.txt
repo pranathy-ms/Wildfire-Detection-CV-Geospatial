@@ -1,0 +1,10 @@
+pandas
+geopandas
+folium
+streamlit
+streamlit-folium
+cdsapi
+apscheduler
+requests
+google-api-python-client
+earthengine-api
