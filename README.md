@@ -30,7 +30,7 @@ This project is a semester-long research initiative focused on detecting wildfir
 ---
 
 ## Repository Structure
-
+```
 Wildfire-Detection-CV-Geospatial/
 ├── SCIPY Paper based ground truth dataset/
 │   ├── data_export.py
@@ -59,7 +59,7 @@ Wildfire-Detection-CV-Geospatial/
 ├── README.md
 ├── .gitignore
 └── requirements.txt
-
+```
 
 ---
 
