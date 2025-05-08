@@ -119,6 +119,7 @@ Wildfire-Detection-CV-Geospatial/
     - Predicted Confidence (when toggled on)
 
 This map provides a layered understanding of fire behavior based on satellite data and environmental conditions.
+![Wildire Layers Analysis](VIIRS Analysis/Wildfire Layers Analysis.png)
 
 ## Future Work
 - Integrate TimestampedGeoJson for real date slider-based spread visualization
