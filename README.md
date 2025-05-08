@@ -32,23 +32,31 @@ This project is a semester-long research initiative focused on detecting wildfir
 ## Repository Structure
 
 Wildfire-Detection-CV-Geospatial/
-|
-├── SCIPY Paper based ground truth dataset/ # CV-based early exploration
-│ ├── data_export.py
-│ ├── env_initialization.py
-│ └── test.py
+├── SCIPY Paper based ground truth dataset/
+│   ├── data_export.py
+│   ├── env_initialization.py
+│   └── test.py
 │
-├── VIIRS Analysis/ # Geospatial + ML pipeline
-│ ├── combined_analysis.ipynb # Main pipeline for feature extraction and modeling
-│ ├── viirs_fire_detection_data_analysis.ipynb
-│ ├── viirs_fire_data_ingestion.py
-│ ├── viirs_fire_detection_data_download.py
-│ ├── slope.tif, slope_overlay.png # Processed raster files
-│ ├── wildfire_analysis.html # Final map with actual & predicted fire points
-│ ├── daily_fires.png, daily_detections.png # Time series plots
-│ └── wildfire_db.sqlite
-|
-├── README.md # You are here
+├── VIIRS Analysis/
+│   ├── combined_analysis.ipynb
+│   ├── viirs_fire_detection_data_analysis.ipynb
+│   ├── viirs_fire_data_ingestion.py
+│   ├── viirs_fire_detection_data_download.py
+│   ├── CDS_Wind_data.py
+│   ├── Lidar_elevation_data.py
+│   ├── slope.tif
+│   ├── slope_overlay.png
+│   ├── wildfire_analysis.html
+│   ├── wildfire_analysis_layers.html
+│   ├── wildfire_timeseries.html
+│   ├── fire_analysis_map.html
+│   ├── daily_detections.png
+│   ├── daily_fires.png
+│   ├── custom_date_fires.geojson
+│   ├── viirs_fires_country.geojson
+│   └── wildfire_db.sqlite
+│
+├── README.md
 ├── .gitignore
 └── requirements.txt
 
