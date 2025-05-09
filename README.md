@@ -20,7 +20,7 @@ This project is a semester-long research initiative focused on detecting wildfir
 - Mapped VIIRS fire points to terrain and wind features to build training data.
 
 ### Phase 4: ML Modeling and Interactive Maps
-- Trained a **Random Forest Regressor** to predict fire confidence levels.
+- Trained a **Random Forest Regressor and Classifier** to predict fire confidence levels.
 - Created interactive **Folium visualizations**:
   - Layered slope raster
   - Wind vectors
@@ -99,11 +99,10 @@ Wildfire-Detection-CV-Geospatial/
 - Built interpretable visualizations with wind vectors and temporal layers
 
 ## Results & Observations
-- Predicting VIIRS confidence using Random Forest yielded low R² (~ -0.15)
+- Predicting VIIRS confidence using Random Forest Regressor yielded low R² (~ -0.15)
 - This allowed the pivot to classification model which yielded with better R² (~ 0.86) 
 - Confidence labels may not correlate strongly with terrain + wind
-- Predicted spread points could still be visualized with color-coded confidence
-- Time slider prototype demonstrates potential for dynamic forecast visualization
+- Predicted spread points could still be visualized with color-coded FRP
 
 ## Visualization Output (Folium Interactive Map)
 ### Key Elements in the Visualization:
