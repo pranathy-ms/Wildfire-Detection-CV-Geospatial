@@ -24,8 +24,7 @@ This project is a semester-long research initiative focused on detecting wildfir
 - Created interactive **Folium visualizations**:
   - Layered slope raster
   - Wind vectors
-  - Fire points colored by actual or predicted confidence
-- Experimented with **time slider visualizations** to show predicted future spread.
+  - Fire points colored by fire intensity
 
 ---
 
@@ -89,7 +88,7 @@ Wildfire-Detection-CV-Geospatial/
     Follow the data extraction, processing, and model training flow
 
 4. **Visualize output**:
-    Run the Folium map cell to generate wildfire_analysis.html
+    Run the Folium map cell to generate wildfire_analysis_layers.html
     Open in browser to explore layers interactively
 
 
@@ -108,22 +107,20 @@ Wildfire-Detection-CV-Geospatial/
 
 ## Visualization Output (Folium Interactive Map)
 ### Key Elements in the Visualization:
-- Circle Colors: Indicate confidence level (0 = low, 1 = nominal, 2 = high) of the accuracy of the fire detected
-- Circle Size: Proportional to FRP (Fire Radiative Power), representing fire intensity in megawatts
+- Circle Colors and Size: Proportional to FRP (Fire Radiative Power), representing fire intensity in megawatts
 - Slope Raster (Background): Dark red shading indicates steeper slopes, which can influence fire spread
 - Blue Lines: Represent wind vectors — direction and strength of the wind based on ERA5 u10/v10 values
 - Popup Info: Clicking a fire point shows:
-    - Actual Confidence
+    - Actual Confidence (when toggled on)
     - FRP (MW)
     - Slope (degrees) at that point
     - Predicted Confidence (when toggled on)
 
 This map provides a layered understanding of fire behavior based on satellite data and environmental conditions.
-![Wildire Layers Analysis](VIIRS%20Analysis/Wildfire%20Layers%20Analysis.png)
+![Wildire Layers Analysis](VIIRS%20Analysis/Wildfire_Analysis.png)
 
 ## Future Work
 - Integrate TimestampedGeoJson for real date slider-based spread visualization
-- Switch to classification models (e.g., RandomForestClassifier)
 - Generate synthetic fire points based on slope + wind vectors for forward prediction
 - Connect to real-time data feeds for automated monitoring
 
