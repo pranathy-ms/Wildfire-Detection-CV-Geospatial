@@ -59,7 +59,7 @@ if __name__ == "__main__":
             print(f"Found {len(gdf)} fires between {start_date} and {end_date}")
             
             # Save to current directory with explicit path handling
-            save_to_current_dir(gdf, 'custom_date_fires.geojson')
+            save_to_current_dir(gdf, 'custom_date_fires_testing_112425.geojson')
             
         except Exception as e:
             print(f"Processing error: {str(e)}")

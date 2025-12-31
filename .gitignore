@@ -1,4 +1,6 @@
 ground-truth-dataset-fc84ca909a29.json
-VIIRS Analysis/VIIRS_API_keys.py
+VIIRS_API_keys.py
 era5_wind_la.nc
 USGS3DEP_30m_33.5_34.5_-119.0_-118.0.tif
+wildfire-detection/data
+data

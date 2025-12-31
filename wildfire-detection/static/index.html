@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wildfire Spread Prediction</title>
+    
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            display: flex;
+            height: 100vh;
+            background: #1a1a1a;
+            color: #fff;
+        }
+        
+        #sidebar {
+            width: 380px;
+            background: #2d2d2d;
+            padding: 25px;
+            overflow-y: auto;
+            border-right: 2px solid #444;
+        }
+        
+        #map {
+            flex: 1;
+            height: 100vh;
+        }
+        
+        h1 {
+            font-size: 22px;
+            margin-bottom: 10px;
+            color: #ff6b35;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .subtitle {
+            font-size: 13px;
+            color: #999;
+            margin-bottom: 25px;
+        }
+        
+        .section {
+            margin-bottom: 25px;
+            padding: 18px;
+            background: #383838;
+            border-radius: 8px;
+            border-left: 4px solid #ff6b35;
+        }
+        
+        h2 {
+            font-size: 15px;
+            margin-bottom: 12px;
+            color: #ffa500;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 6px;
+            font-size: 13px;
+            color: #ccc;
+            font-weight: 500;
+        }
+        
+        select, input {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 15px;
+            border: 1px solid #555;
+            border-radius: 6px;
+            background: #2d2d2d;
+            color: #fff;
+            font-size: 14px;
+            cursor: pointer;
+            transition: border-color 0.3s;
+        }
+        
+        select:hover, input:hover {
+            border-color: #ff6b35;
+        }
+        
+        button {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #ff6b35 0%, #ff8555 100%);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 15px;
+            font-weight: 600;
+            transition: transform 0.2s, box-shadow 0.2s;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(255, 107, 53, 0.4);
+        }
+        
+        button:disabled {
+            background: #666;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .btn-secondary {
+            background: linear-gradient(135deg, #555 0%, #666 100%);
+            margin-top: 10px;
+        }
+        
+        #results {
+            margin-top: 20px;
+        }
+        
+        .loading {
+            text-align: center;
+            padding: 20px;
+            color: #ffa500;
+        }
+        
+        .spinner {
+            border: 3px solid #555;
+            border-top: 3px solid #ff6b35;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .stat-card {
+            background: #2d2d2d;
+            padding: 15px;
+            border-radius: 6px;
+            margin-bottom: 12px;
+            border-left: 4px solid #ff6b35;
+        }
+        
+        .stat-label {
+            font-size: 12px;
+            color: #999;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .stat-value {
+            font-size: 24px;
+            font-weight: bold;
+            color: #fff;
+            margin-top: 5px;
+        }
+        
+        .risk-high { border-left-color: #ff4444; color: #ff4444; }
+        .risk-medium { border-left-color: #ffa500; color: #ffa500; }
+        .risk-low { border-left-color: #44ff44; color: #44ff44; }
+        
+        .legend {
+            background: #383838;
+            padding: 15px;
+            border-radius: 6px;
+            margin-top: 15px;
+            font-size: 12px;
+        }
+        
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 8px;
+        }
+        
+        .legend-color {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            border: 2px solid #fff;
+        }
+        
+        .error {
+            color: #ff4444;
+            padding: 15px;
+            background: rgba(255, 68, 68, 0.1);
+            border-radius: 6px;
+            border-left: 4px solid #ff4444;
+        }
+        
+        .success {
+            color: #44ff44;
+            padding: 15px;
+            background: rgba(68, 255, 68, 0.1);
+            border-radius: 6px;
+            border-left: 4px solid #44ff44;
+        }
+        
+        .info {
+            font-size: 11px;
+            color: #999;
+            margin-top: 8px;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+    <div id="sidebar">
+        <h1> Wildfire Prediction</h1>
+        <p class="subtitle">LA Fires - January 2025</p>
+        
+        <div class="section">
+            <h2>📅 Select Date</h2>
+            <label>Choose date to predict</label>
+            <select id="date-select">
+                <option value="">Loading dates...</option>
+            </select>
+            <p class="info">Model predicts fire spread for next 48 hours</p>
+        </div>
+        
+        <div class="section">
+            <h2>🎯 Actions</h2>
+            <button onclick="showFires()" id="btn-fires">Show Current Fires</button>
+            <button onclick="runPrediction()" id="btn-predict">Run Prediction</button>
+            <button class="btn-secondary" onclick="clearMap()">Clear Map</button>
+        </div>
+        
+        <div id="results"></div>
+        
+        <div class="legend">
+            <h2 style="margin-bottom: 15px;">Map Legend</h2>
+            <div class="legend-item">
+                <div class="legend-color" style="background: #ff4444;"></div>
+                <span>Current Fires</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background: #ff0000;"></div>
+                <span>HIGH Risk (>70%)</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background: #ffa500;"></div>
+                <span>MEDIUM Risk (50-70%)</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background: #ffff00;"></div>
+                <span>LOW Risk (30-50%)</span>
+            </div>
+        </div>
+    </div>
+    
+    <div id="map"></div>
+    
+    <!-- Leaflet JS -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    
+    <script>
+        // Initialize map centered on LA
+        const map = L.map('map').setView([34.05, -118.24], 10);
+        
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© OpenStreetMap contributors'
+        }).addTo(map);
+        
+        let firesLayer = L.layerGroup().addTo(map);
+        let predictionsLayer = L.layerGroup().addTo(map);
+        
+        // Load available dates
+        async function loadDates() {
+            try {
+                const response = await fetch('/api/available_dates');
+                const data = await response.json();
+                
+                const select = document.getElementById('date-select');
+                select.innerHTML = '<option value="">-- Select a date --</option>';
+                
+                data.dates.forEach(date => {
+                    const option = document.createElement('option');
+                    option.value = date;
+                    option.textContent = date;
+                    select.appendChild(option);
+                });
+                
+            } catch (error) {
+                console.error('Error loading dates:', error);
+                showResults('<div class="error">Failed to load dates</div>');
+            }
+        }
+        
+        // Show current fires
+        async function showFires() {
+            const date = document.getElementById('date-select').value;
+            
+            if (!date) {
+                showResults('<div class="error">Please select a date first</div>');
+                return;
+            }
+            
+            showResults('<div class="loading"><div class="spinner"></div><p>Loading fires...</p></div>');
+            
+            try {
+                const response = await fetch(`/api/fires/${date}`);
+                const data = await response.json();
+                
+                firesLayer.clearLayers();
+                
+                data.fires.forEach(fire => {
+                    L.circleMarker([fire.lat, fire.lon], {
+                        radius: 6,
+                        fillColor: '#ff4444',
+                        color: '#fff',
+                        weight: 1,
+                        opacity: 1,
+                        fillOpacity: 0.8
+                    }).bindPopup(`
+                        <b>Active Fire</b><br>
+                        FRP: ${fire.frp.toFixed(1)} MW<br>
+                        Confidence: ${fire.confidence}
+                    `).addTo(firesLayer);
+                });
+                
+                if (data.fires.length > 0) {
+                    map.fitBounds(firesLayer.getBounds(), { padding: [50, 50] });
+                }
+                
+                showResults(`
+                    <div class="success">
+                        <strong>✓ ${data.count} fires displayed</strong>
+                    </div>
+                `);
+                
+            } catch (error) {
+                showResults(`<div class="error">Error: ${error.message}</div>`);
+            }
+        }
+        
+        // Run prediction
+        async function runPrediction() {
+            const date = document.getElementById('date-select').value;
+            
+            if (!date) {
+                showResults('<div class="error">Please select a date first</div>');
+                return;
+            }
+            
+            showResults('<div class="loading"><div class="spinner"></div><p>Running model...</p></div>');
+            document.getElementById('btn-predict').disabled = true;
+            
+            try {
+                const response = await fetch('/api/predict', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ date: date })
+                });
+                
+                const data = await response.json();
+                
+                // Clear previous predictions
+                predictionsLayer.clearLayers();
+                
+                // Add predictions to map
+                const colors = {
+                    high: '#ff0000',
+                    medium: '#ffa500',
+                    low: '#ffff00'
+                };
+                
+                ['high', 'medium', 'low'].forEach(risk => {
+                    data.predictions[risk].forEach(pred => {
+                        L.circleMarker([pred.lat, pred.lon], {
+                            radius: 5,
+                            fillColor: colors[risk],
+                            color: '#000',
+                            weight: 1,
+                            opacity: 1,
+                            fillOpacity: 0.6
+                        }).bindPopup(`
+                            <b>Prediction: ${risk.toUpperCase()}</b><br>
+                            Probability: ${(pred.spread_probability * 100).toFixed(1)}%<br>
+                            Location: ${pred.lat.toFixed(4)}, ${pred.lon.toFixed(4)}
+                        `).addTo(predictionsLayer);
+                    });
+                });
+                
+                // Show summary
+                const summary = data.summary;
+                const riskClass = summary.overall_risk > 0.6 ? 'risk-high' : 
+                                 summary.overall_risk > 0.4 ? 'risk-medium' : 'risk-low';
+                
+                showResults(`
+                    <div class="section">
+                        <h2>📊 Prediction Results</h2>
+                        
+                        <div class="stat-card ${riskClass}">
+                            <div class="stat-label">Overall Risk Score</div>
+                            <div class="stat-value">${(summary.overall_risk * 100).toFixed(1)}%</div>
+                        </div>
+                        
+                        <div class="stat-card">
+                            <div class="stat-label">Total Cells Analyzed</div>
+                            <div class="stat-value">${summary.total_predictions}</div>
+                        </div>
+                        
+                        <div class="stat-card risk-high">
+                            <div class="stat-label">🔴 High Risk Cells</div>
+                            <div class="stat-value">${summary.high_risk}</div>
+                        </div>
+                        
+                        <div class="stat-card risk-medium">
+                            <div class="stat-label">🟠 Medium Risk Cells</div>
+                            <div class="stat-value">${summary.medium_risk}</div>
+                        </div>
+                        
+                        <div class="stat-card risk-low">
+                            <div class="stat-label">🟡 Low Risk Cells</div>
+                            <div class="stat-value">${summary.low_risk}</div>
+                        </div>
+                    </div>
+                `);
+                
+            } catch (error) {
+                showResults(`<div class="error">Error: ${error.message}</div>`);
+            } finally {
+                document.getElementById('btn-predict').disabled = false;
+            }
+        }
+        
+        // Clear map
+        function clearMap() {
+            firesLayer.clearLayers();
+            predictionsLayer.clearLayers();
+            showResults('');
+        }
+        
+        // Show results
+        function showResults(html) {
+            document.getElementById('results').innerHTML = html;
+        }
+        
+        // Load dates on startup
+        loadDates();
+    </script>
+</body>
+</html>
